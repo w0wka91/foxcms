@@ -1,0 +1,87 @@
+type Project {
+    id: ID!
+    name: String!
+    generatedName: String!
+    branches: [Branch!]!
+}
+
+type Branch {
+    id: ID!
+    name: String!
+    project: Project!
+    contentModels: [ContentModel!]!
+}
+
+type ContentModel {
+    id: ID!
+    name: String!
+    apiName: String!
+    description: String
+    fields: [Field!]!
+    updatedAt: String!
+}
+
+type Enum {
+    id: ID!
+    name: String!
+    apiName: String!
+    values: [String!]!
+}
+
+interface Field {
+    name: String!
+    apiName: String!
+}
+
+union FieldEntity = ScalarField | ListField | RelationField
+
+type ScalarField implements Field {
+    id: ID!
+    name: String!
+    apiName: String!
+    type: DisplayType!
+    concern: Concern!
+    constraint: Constraint!
+}
+
+type ListField implements Field {
+    id: ID!
+    name: String!
+    apiName: String!
+    type: DisplayType!
+}
+
+type RelationField implements Field {
+    id: ID!
+    name: String!
+    apiName: String!
+    relatesTo: ContentModel!
+    type: RelationType!
+}
+
+enum DisplayType {
+    SINGLE_LINE_TEXT,
+    MULTI_LINE_TEXT,
+    INTEGER,
+    FLOAT,
+    CHECKBOX,
+    DATE,
+    JSON_EDITOR
+}
+
+enum Concern {
+    OPTIONAL,
+    REQUIRED
+}
+
+enum Constraint {
+    NONE,
+    UNIQUE
+}
+
+enum RelationType {
+    ONE_TO_ONE,
+    ONE_TO_MANY,
+    MANY_TO_ONE,
+    MANY_TO_MANY
+}

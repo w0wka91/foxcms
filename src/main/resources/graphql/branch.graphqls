@@ -1,0 +1,25 @@
+extend type Query {
+    branch(id: ID!): Branch
+    contentModels(branchId: ID!): [ContentModel!]!
+}
+
+input AddContentModelInput {
+    branchId: ID!
+    name: String!
+    apiName: String!
+    description: String!
+}
+
+input AddEnumInput {
+    branchId: ID!
+    name: String!
+    apiName: String!
+    values: [String!]!
+}
+
+extend type Mutation {
+    addContentModel(input: AddContentModelInput!): ContentModel!
+    addEnum(input: AddEnumInput!): Enum!
+    deleteContentModel(branchId: ID!, modelId: ID!): ID!
+    deleteEnum(branchId: ID!, enumId: ID!): ID!
+}
