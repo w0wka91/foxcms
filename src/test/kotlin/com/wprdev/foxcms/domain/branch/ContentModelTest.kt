@@ -23,7 +23,7 @@ class ContentModelTest {
         val updatedAt = contentModel.fields.stream().filter { f -> f.apiName.value == "updatedAt" }.findAny()
         assertThat(updatedAt.get()).isOfAnyClassIn(UpdatedAtField::class.java)
 
-        val publishStatus = contentModel.fields.stream().filter { f -> f.apiName.value == "publishStatus" }.findAny()
+        val publishStatus = contentModel.fields.stream().filter { f -> f.apiName.value == "status" }.findAny()
         assertThat(publishStatus.get()).isOfAnyClassIn(PublishStatusField::class.java)
     }
 
@@ -127,7 +127,7 @@ class ContentModelTest {
         contentModel.addField(handle)
         contentModel.addField(name)
         assertThat(contentModel.generateSDL())
-                .isEqualTo("type User { id: ID! @id createdAt: DateTime! @createdAt updatedAt: DateTime! @updatedAt publishStatus: PublishStatus! handle: String! @unique name: String }")
+                .isEqualTo("type User { id: ID! @id createdAt: DateTime! @createdAt updatedAt: DateTime! @updatedAt status: Status! handle: String! @unique name: String }")
     }
 
     @Test
@@ -142,7 +142,7 @@ class ContentModelTest {
         contentModel.addField(numbers)
         contentModel.addField(comments)
         assertThat(contentModel.generateSDL())
-                .isEqualTo("type User { id: ID! @id createdAt: DateTime! @createdAt updatedAt: DateTime! @updatedAt publishStatus: PublishStatus! numbers: [Int!]! @scalarList(strategy: RELATION) comments: [String!]! @scalarList(strategy: RELATION) }")
+                .isEqualTo("type User { id: ID! @id createdAt: DateTime! @createdAt updatedAt: DateTime! @updatedAt status: Status! numbers: [Int!]! @scalarList(strategy: RELATION) comments: [String!]! @scalarList(strategy: RELATION) }")
     }
 
 }
