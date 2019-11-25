@@ -5,4 +5,5 @@ jdk:
 services:
   - docker
 before_script:
-  - docker-compose -f ./src/test/resources/prisma/docker-compose.yml up -d
+  - docker-compose -f ./src/test/resources/env/docker-compose.yml up -d
+  - docker ps
