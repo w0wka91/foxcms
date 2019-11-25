@@ -4,3 +4,5 @@ jdk:
   - openjdk8
 services:
   - docker
+before_script:
+  - docker-compose -f ./src/test/resources/prisma/docker-compose.yml up -d
