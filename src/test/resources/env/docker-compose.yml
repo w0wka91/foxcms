@@ -4,7 +4,7 @@ services:
     image: prismagraphql/prisma:1.34
     restart: always
     ports:
-      - '4466:4466'
+      - '4467:4466'
     environment:
       PRISMA_CONFIG: |
         enableManagementApi: true
@@ -23,5 +23,17 @@ services:
       MYSQL_ROOT_PASSWORD: prisma
     volumes:
       - mysql:/var/lib/mysql
+  postgres-db:
+    image: postgres
+    restart: always
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: foxcms-test
+      POSTGRES_PASSWORD: foxcms-test
+      POSTGRES_DB: foxcms-test
+    volumes:
+      - postgres:/var/lib/postgresql/data
 volumes:
   mysql: ~
+  postgres: ~

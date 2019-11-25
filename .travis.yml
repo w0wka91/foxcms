@@ -1,6 +1,8 @@
 language: java
-sudo: true
 jdk:
   - openjdk8
 services:
   - docker
+before_script:
+  - docker-compose -f ./src/test/resources/env/docker-compose.yml up -d
+  - docker ps
