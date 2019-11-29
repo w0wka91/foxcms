@@ -3,6 +3,7 @@ type Project {
     name: String!
     generatedName: String!
     branches: [Branch!]!
+    updatedAt: String!
 }
 
 type Branch {
@@ -33,7 +34,25 @@ interface Field {
     apiName: String!
 }
 
-union FieldEntity = ScalarField | ListField | RelationField
+type IdField implements Field {
+    name: String!
+    apiName: String!
+}
+
+type UpdatedAtField implements Field {
+    name: String!
+    apiName: String!
+}
+
+type CreatedAtField implements Field {
+    name: String!
+    apiName: String!
+}
+
+type PublishStatusField implements Field {
+    name: String!
+    apiName: String!
+}
 
 type ScalarField implements Field {
     id: ID!
