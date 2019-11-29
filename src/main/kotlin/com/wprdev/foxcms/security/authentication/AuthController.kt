@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
+data class UserDto(val username: String?)
 
 @RestController
 class AuthController(
@@ -29,10 +30,9 @@ class AuthController(
                     HttpStatus.NOT_ACCEPTABLE, "The password doesn't meet the security requirements"
             )
         }
-        if (this.userRepo.findByUsername(username).isPresent) {
+        this.userRepo.findByUsername(username).ifPresent {
             throw ResponseStatusException(
-                    HttpStatus.CONFLICT, "User with that username already exists"
-            )
+                    HttpStatus.CONFLICT, "User with that username already exists")
         }
         val user = User(username, encoder.encode(password))
         this.userRepo.save(user)
@@ -44,8 +44,6 @@ class AuthController(
         this.projectService.createProject("Initial project")
     }
 
-    @GetMapping("/username")
-    @ResponseBody
-    fun currentUsername(auth: Authentication) = auth.principal
-
+    @GetMapping("/user")
+    fun user(auth: Authentication?) = UserDto(auth?.name)
 }

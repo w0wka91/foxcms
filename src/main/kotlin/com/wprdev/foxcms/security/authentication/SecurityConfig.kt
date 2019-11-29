@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint
 class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    lateinit var mySuccessHandler: MySavedRequestAwareAuthenticationSuccessHandler
+    lateinit var mySuccessHandler: AuthSuccessHandler
 
     @Autowired
     lateinit var userDetails: UserDetails
@@ -43,10 +43,9 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/graphql")
-                .permitAll()
-                .antMatchers("/register")
-                .permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/user").permitAll()
+                .antMatchers("/graphql").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest()
@@ -58,8 +57,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .formLogin()
                 .successHandler(mySuccessHandler)
                 .and()
-                .logout().deleteCookies()
-                .and()
-                .rememberMe().key("foxcms")
+                .logout()
     }
 }
