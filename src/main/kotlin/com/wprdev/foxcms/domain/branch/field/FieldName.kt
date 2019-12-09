@@ -9,7 +9,7 @@ class FieldName(
         val value: String) {
     init {
         require(value.isNotEmpty()) { "Name can't be empty" }
-        require(value.matches(Regex("^[a-zA-Z0-9 ]*\$"))) { "Name has to be alphanumeric" }
+        require(value.matches(Regex("^[a-zA-Z0-9_]*\$"))) { "Name has to be alphanumeric" }
         require(value.length <= 64) { "Name can contain at most 64 characters" }
         require(!Character.isUpperCase(value[0])) { "Name needs to start with an lowercase letter" }
     }
