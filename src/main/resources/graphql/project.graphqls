@@ -1,6 +1,6 @@
 type Query {
     projects: [Project!]!
-    project(id: ID): Project
+    project(generatedName: String): Project
 }
 
 type Mutation {
