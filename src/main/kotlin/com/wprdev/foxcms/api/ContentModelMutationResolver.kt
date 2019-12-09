@@ -29,7 +29,7 @@ class ContentModelMutationResolver(
 
     fun addScalarField(
             input: AddPrimitiveFieldInput
-    ): Field? {
+    ): ScalarField? {
         with(input) {
             val contentModel = contentModelRepo.findById(modelId).orElseThrow { throw ResponseStatusException(HttpStatus.NOT_FOUND) }
 
@@ -44,7 +44,7 @@ class ContentModelMutationResolver(
 
             contentModelRepo.save(contentModel)
             prismaServer.deploy(contentModel.branch)
-            return contentModel.fields.find { it == field }
+            return contentModel.fields.find { it == field } as ScalarField
         }
     }
 
@@ -55,7 +55,7 @@ class ContentModelMutationResolver(
 
     fun addListField(
             input: AddListFieldInput
-    ): Field? {
+    ): ListField? {
         with(input) {
             val contentModel = contentModelRepo.findById(modelId).orElseThrow { throw ResponseStatusException(HttpStatus.NOT_FOUND) }
 
@@ -68,7 +68,7 @@ class ContentModelMutationResolver(
 
             contentModelRepo.save(contentModel)
             prismaServer.deploy(contentModel.branch)
-            return contentModel.fields.find { it == field }
+            return contentModel.fields.find { it == field } as ListField
         }
     }
 

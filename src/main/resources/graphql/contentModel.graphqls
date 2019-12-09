@@ -30,8 +30,8 @@ input AddRelationInput {
 
 extend type Mutation {
     addContentModel(input: AddContentModelInput!): ContentModel!
-    addScalarField(input: AddScalarFieldInput!): Field!
-    addListField(input: AddListFieldInput!): Field!
+    addScalarField(input: AddScalarFieldInput!): ScalarField!
+    addListField(input: AddListFieldInput!): ListField!
     addRelationField(input: AddRelationInput!): RelationField!
 
     deleteField(modelId: ID!, id: ID!): ID!
