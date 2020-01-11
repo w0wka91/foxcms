@@ -4,3 +4,5 @@ jdk:
   - openjdk8
 services:
   - docker
+before_install:
+  - docker-compose -f ./src/test/resources/env/docker-compose.yml up -d
