@@ -24,7 +24,7 @@ services:
       - "5433:5432"
     restart: always
     environment:
-      POSTGRES_DB: prisma
+      POSTGRES_DB: foxcms
       POSTGRES_USER: foxcms
       POSTGRES_PASSWORD: foxcms
     volumes:

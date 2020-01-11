@@ -13,17 +13,20 @@ services:
           default:
             connector: postgres
             host: postgres
-            user: prisma
-            password: prisma
+            user: foxcms
+            password: foxcms
             rawAccess: true
             port: 5432
             migrations: true
   postgres:
     image: postgres
+    ports:
+      - "5432:5432"
     restart: always
     environment:
-      POSTGRES_USER: prisma
-      POSTGRES_PASSWORD: prisma
+      POSTGRES_DB: foxcms
+      POSTGRES_USER: foxcms
+      POSTGRES_PASSWORD: foxcms
     volumes:
       - postgres-dev:/var/lib/postgresql/data
 volumes:
