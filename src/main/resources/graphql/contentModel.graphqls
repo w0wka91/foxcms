@@ -28,11 +28,21 @@ input AddRelationInput {
     relationType: RelationType!
 }
 
+type DeleteFieldPayload {
+    modelId: ID!
+    fieldId: ID!
+}
+
+type AddRelationFieldPayload {
+    modelId: ID!
+    field: RelationField!
+}
+
 extend type Mutation {
     addContentModel(input: AddContentModelInput!): ContentModel!
     addScalarField(input: AddScalarFieldInput!): ScalarField!
     addListField(input: AddListFieldInput!): ListField!
-    addRelationField(input: AddRelationInput!): RelationField!
+    addRelationField(input: AddRelationInput!): [AddRelationFieldPayload!]!
 
-    deleteField(modelId: ID!, id: ID!): ID!
+    deleteField(modelId: ID!, id: ID!): [DeleteFieldPayload!]!
 }

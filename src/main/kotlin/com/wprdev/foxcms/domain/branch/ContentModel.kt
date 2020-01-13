@@ -38,9 +38,8 @@ class ContentModel(@Embedded val name: Name,
             check(branch == field.relatesTo.branch) { "Related model is not in the same branch" }
             check(!fields.any {
                 it is RelationField &&
-                        it.relatesTo == field.relatesTo &&
-                        it.type == field.type
-            })
+                        it.relatesTo == field.relatesTo
+            }) { "There is already a relation between these two models" }
         }
         field.contentModel = this
         this._fields.add(field)

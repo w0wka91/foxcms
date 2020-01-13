@@ -11,6 +11,7 @@ import com.wprdev.foxcms.infrastructure.ContentModelRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ResponseStatusException
+import java.lang.IllegalArgumentException
 
 
 @Component
@@ -82,9 +83,11 @@ class ContentModelMutationResolver(
             val relationType: RelationType
     )
 
+    data class AddRelationFieldPayload(val modelId: Long, val field: RelationField)
+
     fun addRelationField(
             input: AddRelationInput
-    ): RelationField? {
+    ): List<AddRelationFieldPayload> {
         with(input) {
             val model = contentModelRepo.findById(modelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
             val relatesToModel = contentModelRepo.findById(relatesToModelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
@@ -109,19 +112,31 @@ class ContentModelMutationResolver(
             contentModelRepo.save(relatesToModel)
             contentModelRepo.save(model)
             prismaServer.deploy(model.branch)
-            return relation
+            return listOf(AddRelationFieldPayload(modelId, relation), AddRelationFieldPayload(relatesToModelId, relationOtherSide))
         }
     }
+
+    data class DeleteFieldPayload(val modelId: Long, val fieldId: Long?)
 
     fun deleteField(
             modelId: Long,
             fieldId: Long
-    ): Long? {
+    ): List<DeleteFieldPayload> {
         val model = this.contentModelRepo.findById(modelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
         val field = model.findField(fieldId)
-        model.deleteField(field)
-        contentModelRepo.save(model)
-        prismaServer.deploy(model.branch)
-        return fieldId
+        if(field != null) {
+            val result = if(field is RelationField) {
+                val relatesToField = field.relatesTo.fields.find { it is RelationField && it.relatesTo.id == modelId } as RelationField
+                listOf( DeleteFieldPayload(modelId, field.id), DeleteFieldPayload(field.relatesTo.id, relatesToField.id))
+            } else {
+                listOf( DeleteFieldPayload(modelId, field.id))
+            }
+            model.deleteField(field)
+            contentModelRepo.save(model)
+            prismaServer.deploy(model.branch)
+            return result
+        } else {
+            throw IllegalArgumentException("Field doesnt exist within content model")
+        }
     }
 }
