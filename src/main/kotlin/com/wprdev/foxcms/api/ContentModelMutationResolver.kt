@@ -88,6 +88,7 @@ class ContentModelMutationResolver(
     fun addRelationField(
             input: AddRelationInput
     ): List<AddRelationFieldPayload> {
+        check(input.modelId !== input.relatesToModelId) { "Recursive relationships are not supported yet" }
         with(input) {
             val model = contentModelRepo.findById(modelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
             val relatesToModel = contentModelRepo.findById(relatesToModelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }

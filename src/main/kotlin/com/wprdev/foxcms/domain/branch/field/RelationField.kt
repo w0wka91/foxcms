@@ -37,7 +37,7 @@ class RelationField(
         when (this.type) {
             RelationType.ONE_TO_ONE -> sdl.append("${relatesTo.name.value}!")
             RelationType.ONE_TO_ONE_DIRECTIVE, RelationType.MANY_TO_ONE -> sdl.append("${relatesTo.name.value}! @relation(link: INLINE)")
-            RelationType.ONE_TO_MANY -> sdl.append("[${relatesTo.name.value}!]!")
+            RelationType.ONE_TO_MANY, RelationType.MANY_TO_MANY -> sdl.append("[${relatesTo.name.value}!]!")
         }
         return sdl.toString()
     }
