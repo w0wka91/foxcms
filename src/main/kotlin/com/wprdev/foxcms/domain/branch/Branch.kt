@@ -23,7 +23,7 @@ class Branch(@ManyToOne
     @get:Transient
     val enums: MutableList<Enum>
         get() = mutableListOf(
-                Enum(Name("Status"), ModelName("Status"), listOf("Draft", "Pending", "Publish"))
+                Enum(Name("Status"), ModelName("Status"), listOf("Draft", "Pending", "Published"))
         ).union(_enums).toMutableList()
 
 
