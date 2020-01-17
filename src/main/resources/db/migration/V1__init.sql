@@ -40,7 +40,7 @@ create type concern as enum ('OPTIONAL', 'REQUIRED');
 
 create type "constraint" as enum ('NONE', 'UNIQUE');
 
-create type display_type as enum ('SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT', 'INTEGER', 'FLOAT', 'DATE', 'JSON_EDITOR');
+create type display_type as enum ('SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT', 'INTEGER', 'FLOAT', 'DATE', 'JSON_EDITOR', 'CHECKBOX');
 
 create type relation_type as enum ('ONE_TO_ONE_DIRECTIVE', 'ONE_TO_ONE', 'ONE_TO_MANY', 'MANY_TO_ONE', 'MANY_TO_MANY');
 
