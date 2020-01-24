@@ -9,6 +9,7 @@ import org.hibernate.annotations.Cascade
 import org.hibernate.annotations.CascadeType
 import javax.persistence.*
 
+
 @Entity
 @Table(name = "content_model")
 class ContentModel(@Embedded val name: Name,
@@ -20,8 +21,16 @@ class ContentModel(@Embedded val name: Name,
 
     @OneToMany(mappedBy = "contentModel", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
+    @OrderBy("position ASC")
     private val _fields = mutableListOf<FieldEntity>()
 
+    @OneToOne
+    @JoinColumn(name = "preview_field_id", referencedColumnName = "id")
+    private var _previewField: ScalarField? = null
+
+    val previewField: Field
+        get() = _previewField ?: IdField
+    
     @get:Transient
     val fields: MutableList<Field>
         get() =
@@ -41,7 +50,11 @@ class ContentModel(@Embedded val name: Name,
                         it.relatesTo == field.relatesTo
             }) { "There is already a relation between these two models" }
         }
+        if (field is ScalarField && field.type == DisplayType.SINGLE_LINE_TEXT && this._previewField == null) {
+            this._previewField = field
+        }
         field.contentModel = this
+        field.position = _fields.size + 1
         this._fields.add(field)
     }
 
@@ -52,6 +65,14 @@ class ContentModel(@Embedded val name: Name,
             registerEvent(RelationFieldDeleted(id, field.relatesTo.id, field.type))
         }
         _fields.remove(field)
+        _fields.forEachIndexed { index, field -> field.position = index + 1 }
+    }
+
+    fun reorderField(from: Int, to: Int) {
+        check(from > 0 && to > 0 && to <= _fields.size) { "Invalid positions" }
+        val removed = _fields.removeAt(from - 1)
+        _fields.add(to - 1, removed)
+        _fields.forEachIndexed { index, field -> field.position = index + 1 }
     }
 
     fun generateSDL(): String {

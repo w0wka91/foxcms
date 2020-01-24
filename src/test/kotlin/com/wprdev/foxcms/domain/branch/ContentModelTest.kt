@@ -37,6 +37,7 @@ class ContentModelTest {
                 Constraint.UNIQUE)
         contentModel.addField(field)
         assertTrue(contentModel.fields.any { it == field })
+        assertThat(field.position).isEqualTo(1)
     }
 
     @Test
@@ -51,6 +52,34 @@ class ContentModelTest {
         assertTrue(contentModel.fields.any { it == field })
         contentModel.deleteField(field)
         assertFalse(contentModel.fields.any { it == field })
+    }
+
+    @Test
+    fun `test deleting a field should reorder existing fields`() {
+        val contentModel = ContentModel(Name("User"), ModelName("User"), "")
+        val field = ScalarField(Name("Field"),
+                FieldName("field"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.REQUIRED,
+                Constraint.UNIQUE)
+        val field2 = ScalarField(Name("Field2"),
+                FieldName("field2"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.REQUIRED,
+                Constraint.UNIQUE)
+        val field3 = ScalarField(Name("Field3"),
+                FieldName("field3"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.REQUIRED,
+                Constraint.UNIQUE)
+        contentModel.addField(field)
+        contentModel.addField(field2)
+        contentModel.addField(field3)
+
+        contentModel.deleteField(field2)
+
+        assertThat(field.position).isEqualTo(1)
+        assertThat(field3.position).isEqualTo(2)
     }
 
     @Test
@@ -109,6 +138,128 @@ class ContentModelTest {
         Assertions.assertThatThrownBy {
             contentModel.addField(nameField)
         }.isInstanceOf(IllegalStateException::class.java).hasMessageContaining("already exists")
+    }
+
+    @Test
+    fun `test reordering a field upwards`() {
+        val contentModel = ContentModel(Name("User"), ModelName("User"), "")
+        val name = ScalarField(
+                Name("name"),
+                FieldName("name"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val birthday = ScalarField(
+                Name("birthday"),
+                FieldName("birthday"),
+                DisplayType.DATE,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val street = ScalarField(
+                Name("street"),
+                FieldName("street"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val streetNo = ScalarField(
+                Name("streetNo"),
+                FieldName("streetNo"),
+                DisplayType.INTEGER,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        contentModel.addField(name)
+        contentModel.addField(birthday)
+        contentModel.addField(street)
+        contentModel.addField(streetNo)
+
+        contentModel.reorderField(4, 1)
+
+        assertThat(streetNo.position).isEqualTo(1)
+        assertThat(name.position).isEqualTo(2)
+        assertThat(birthday.position).isEqualTo(3)
+        assertThat(street.position).isEqualTo(4)
+    }
+
+    @Test
+    fun `test reordering a field downwards`() {
+        val contentModel = ContentModel(Name("User"), ModelName("User"), "")
+        val name = ScalarField(
+                Name("name"),
+                FieldName("name"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val birthday = ScalarField(
+                Name("birthday"),
+                FieldName("birthday"),
+                DisplayType.DATE,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val street = ScalarField(
+                Name("street"),
+                FieldName("street"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val streetNo = ScalarField(
+                Name("streetNo"),
+                FieldName("streetNo"),
+                DisplayType.INTEGER,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        contentModel.addField(name)
+        contentModel.addField(birthday)
+        contentModel.addField(street)
+        contentModel.addField(streetNo)
+
+        contentModel.reorderField(2, 4)
+
+        assertThat(name.position).isEqualTo(1)
+        assertThat(street.position).isEqualTo(2)
+        assertThat(streetNo.position).isEqualTo(3)
+        assertThat(birthday.position).isEqualTo(4)
+    }
+
+    @Test
+    fun `test reordering a field with invalid positions`() {
+        val contentModel = ContentModel(Name("User"), ModelName("User"), "")
+        val name = ScalarField(
+                Name("name"),
+                FieldName("name"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val birthday = ScalarField(
+                Name("birthday"),
+                FieldName("birthday"),
+                DisplayType.DATE,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val street = ScalarField(
+                Name("street"),
+                FieldName("street"),
+                DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        val streetNo = ScalarField(
+                Name("streetNo"),
+                FieldName("streetNo"),
+                DisplayType.INTEGER,
+                Concern.OPTIONAL,
+                Constraint.NONE)
+        contentModel.addField(name)
+        contentModel.addField(birthday)
+        contentModel.addField(street)
+        contentModel.addField(streetNo)
+        Assertions.assertThatThrownBy {
+            contentModel.reorderField(-1, 4)
+        }.isInstanceOf(IllegalStateException::class.java).hasMessageContaining("Invalid positions")
+        Assertions.assertThatThrownBy {
+            contentModel.reorderField(0, 4)
+        }.isInstanceOf(IllegalStateException::class.java).hasMessageContaining("Invalid positions")
+        Assertions.assertThatThrownBy {
+            contentModel.reorderField(1, 5)
+        }.isInstanceOf(IllegalStateException::class.java).hasMessageContaining("Invalid positions")
     }
 
     @Test

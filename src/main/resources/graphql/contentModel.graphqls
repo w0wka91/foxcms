@@ -43,6 +43,6 @@ extend type Mutation {
     addScalarField(input: AddScalarFieldInput!): ScalarField!
     addListField(input: AddListFieldInput!): ListField!
     addRelationField(input: AddRelationInput!): [AddRelationFieldPayload!]!
-
     deleteField(modelId: ID!, id: ID!): [DeleteFieldPayload!]!
+    reorderField(modelId: ID!, from: Int!, to: Int!): ContentModel
 }

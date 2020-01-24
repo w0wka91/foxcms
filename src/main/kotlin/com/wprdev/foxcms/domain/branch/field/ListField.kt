@@ -19,6 +19,6 @@ class ListField(
         @Enumerated(EnumType.STRING)
         @Type(type = "pgsql_enum")
         val type: DisplayType) : FieldEntity() {
-
+    override var position: Int = 0
     override fun generateSDL(): String = "${this.apiName.value}: [${this.type}!]! @scalarList(strategy: RELATION)"
 }

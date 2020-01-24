@@ -4,6 +4,7 @@ import com.coxautodev.graphql.tools.GraphQLMutationResolver
 import com.wprdev.foxcms.common.Name
 import com.wprdev.foxcms.domain.branch.Concern
 import com.wprdev.foxcms.domain.branch.Constraint
+import com.wprdev.foxcms.domain.branch.ContentModel
 import com.wprdev.foxcms.domain.branch.RelationType
 import com.wprdev.foxcms.domain.branch.field.*
 import com.wprdev.foxcms.domain.prisma.PrismaServer
@@ -139,5 +140,17 @@ class ContentModelMutationResolver(
         } else {
             throw IllegalArgumentException("Field doesnt exist within content model")
         }
+    }
+
+    fun reorderField(
+            modelId: Long,
+            from: Int,
+            to: Int
+    ): ContentModel? {
+        val model = this.contentModelRepo.findById(modelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
+        model.reorderField(from, to)
+        contentModelRepo.save(model)
+        prismaServer.deploy(model.branch)
+        return model
     }
 }

@@ -28,15 +28,16 @@ class RelationField(
             RelationType.ONE_TO_ONE_DIRECTIVE -> RelationType.ONE_TO_ONE
             RelationType.MANY_TO_ONE -> RelationType.ONE_TO_MANY
             RelationType.ONE_TO_MANY -> RelationType.MANY_TO_ONE
-            RelationType.MANY_TO_MANY -> RelationType.MANY_TO_ONE
+            RelationType.MANY_TO_MANY -> RelationType.MANY_TO_MANY
         }
     }
 
+    override var position: Int = 0
     override fun generateSDL(): String {
         val sdl = StringBuilder("${apiName.value}: ")
         when (this.type) {
-            RelationType.ONE_TO_ONE -> sdl.append("${relatesTo.name.value}!")
-            RelationType.ONE_TO_ONE_DIRECTIVE, RelationType.MANY_TO_ONE -> sdl.append("${relatesTo.name.value}! @relation(link: INLINE)")
+            RelationType.ONE_TO_ONE -> sdl.append("${relatesTo.name.value}")
+            RelationType.ONE_TO_ONE_DIRECTIVE, RelationType.MANY_TO_ONE -> sdl.append("${relatesTo.name.value} @relation(link: INLINE)")
             RelationType.ONE_TO_MANY, RelationType.MANY_TO_MANY -> sdl.append("[${relatesTo.name.value}!]!")
         }
         return sdl.toString()

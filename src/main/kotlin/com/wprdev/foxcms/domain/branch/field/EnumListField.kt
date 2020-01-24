@@ -15,7 +15,7 @@ class EnumListField(
         @ManyToOne
         @JoinColumn(name = "enum_id")
         val enum: Enum) : FieldEntity() {
-
+    override var position: Int = 0
     override fun generateSDL(): String = "${this.apiName.value}: [${this.enum.apiName}!]! @scalarList(strategy: RELATION)"
 
 }

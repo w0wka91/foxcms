@@ -27,13 +27,14 @@ create table branch
 
 create table content_model
 (
-    id              serial primary key,
-    branch_id       integer         not null references branch (id),
-    name            varchar(100)    not null,
-    api_name         varchar(100)    not null,
-    description     varchar(100)    not null,
-    created_at      timestamp default now(),
-    updated_at      timestamp default now()
+    id                serial primary key,
+    branch_id         integer         not null references branch (id),
+    name              varchar(100)    not null,
+    api_name          varchar(100)    not null,
+    description       varchar(100)    not null,
+    preview_field_id  integer,
+    created_at        timestamp default now(),
+    updated_at        timestamp default now()
 );
 
 create type concern as enum ('OPTIONAL', 'REQUIRED');
@@ -50,6 +51,7 @@ create table field
     id               serial primary key,
     content_model_id integer          not null references content_model (id),
     type             display_type,
+    position         integer,
     name             varchar(100)     not null,
     api_name         varchar(100)     not null,
     concern          concern,
@@ -60,6 +62,11 @@ create table field
     created_at       timestamp default now(),
     updated_at       timestamp default now()
 );
+
+alter table content_model
+add constraint preview_field_fk
+FOREIGN KEY (preview_field_id)
+REFERENCES field(id);
 
 create table "enum"
 (

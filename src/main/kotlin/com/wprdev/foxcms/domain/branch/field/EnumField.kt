@@ -20,7 +20,7 @@ class EnumField(
         @ManyToOne
         @JoinColumn(name = "enum_id")
         val enum: Enum) : FieldEntity() {
-
+    override var position: Int = 0
     override fun generateSDL(): String {
         val type = StringBuilder(this.enum.apiName.toString())
         if (Concern.REQUIRED == this.concern) {

@@ -23,7 +23,7 @@ open class ScalarField(@Embedded
                        @Type(type = "pgsql_enum")
                        @Column(name = "\"constraint\"")
                        open val constraint: Constraint) : FieldEntity() {
-
+    override var position: Int = 0
     override fun generateSDL(): String {
         val type = StringBuilder(this.type.toString())
         if (Concern.REQUIRED == this.concern) {

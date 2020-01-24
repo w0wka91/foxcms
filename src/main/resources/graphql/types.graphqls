@@ -18,6 +18,7 @@ type ContentModel {
     name: String!
     apiName: String!
     description: String
+    previewField: Field!
     fields: [Field!]!
     updatedAt: String!
 }
@@ -32,32 +33,38 @@ type Enum {
 interface Field {
     name: String!
     apiName: String!
+    position: Int!
 }
 
 type IdField implements Field {
     name: String!
     apiName: String!
+    position: Int!
 }
 
 type UpdatedAtField implements Field {
     name: String!
     apiName: String!
+    position: Int!
 }
 
 type CreatedAtField implements Field {
     name: String!
     apiName: String!
+    position: Int!
 }
 
 type PublishStatusField implements Field {
     name: String!
     apiName: String!
+    position: Int!
 }
 
 type ScalarField implements Field {
     id: ID!
     name: String!
     apiName: String!
+    position: Int!
     type: DisplayType!
     concern: Concern!
     constraint: Constraint!
@@ -67,6 +74,7 @@ type ListField implements Field {
     id: ID!
     name: String!
     apiName: String!
+    position: Int!
     type: DisplayType!
 }
 
@@ -74,6 +82,7 @@ type RelationField implements Field {
     id: ID!
     name: String!
     apiName: String!
+    position: Int!
     relatesTo: ContentModel!
     type: RelationType!
 }
