@@ -1,7 +1,7 @@
 package com.wprdev.foxcms.api
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
-import com.wprdev.foxcms.domain.project.infrastructure.ProjectRepository
+import com.wprdev.foxcms.infrastructure.ProjectRepository
 import org.springframework.stereotype.Component
 
 

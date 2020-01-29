@@ -4,7 +4,7 @@ import com.wprdev.foxcms.common.Name
 import com.wprdev.foxcms.domain.branch.field.EnumField
 import com.wprdev.foxcms.domain.branch.field.EnumListField
 import com.wprdev.foxcms.domain.branch.field.FieldName
-import com.wprdev.foxcms.domain.project.domain.Project
+import com.wprdev.foxcms.domain.project.Project
 import org.assertj.core.api.Assertions
 import org.junit.Assert.*
 import org.junit.Before

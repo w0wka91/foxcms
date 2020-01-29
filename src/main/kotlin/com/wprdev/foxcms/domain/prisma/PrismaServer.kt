@@ -1,7 +1,7 @@
 package com.wprdev.foxcms.domain.prisma
 
 import com.wprdev.foxcms.domain.branch.Branch
-import com.wprdev.foxcms.domain.project.domain.Project
+import com.wprdev.foxcms.domain.project.Project
 import io.aexp.nodes.graphql.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

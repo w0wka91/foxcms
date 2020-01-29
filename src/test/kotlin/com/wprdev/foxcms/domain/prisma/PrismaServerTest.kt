@@ -6,7 +6,7 @@ import com.wprdev.foxcms.domain.branch.field.DisplayType
 import com.wprdev.foxcms.domain.branch.field.FieldName
 import com.wprdev.foxcms.domain.branch.field.RelationField
 import com.wprdev.foxcms.domain.branch.field.ScalarField
-import com.wprdev.foxcms.domain.project.domain.Project
+import com.wprdev.foxcms.domain.project.Project
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired

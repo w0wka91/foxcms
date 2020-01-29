@@ -1,7 +1,7 @@
-package com.wprdev.foxcms.domain.project.domain
+package com.wprdev.foxcms.domain.project
 
 import com.wprdev.foxcms.domain.prisma.PrismaServer
-import com.wprdev.foxcms.domain.project.infrastructure.ProjectRepository
+import com.wprdev.foxcms.infrastructure.ProjectRepository
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,6 +12,7 @@ class ProjectService(
     fun createProject(name: String): Project {
         val project = Project(name)
         prismaServer.addProject(project)
+        prismaServer.deploy(project.branches.first())
         return projectRepo.save(project)
     }
 }

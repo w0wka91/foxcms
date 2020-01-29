@@ -12,9 +12,9 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "content_model")
-class ContentModel(@Embedded val name: Name,
-                   @Embedded val apiName: ModelName,
-                   val description: String) : Aggregate<ContentModelEvent>() {
+open class ContentModel(@Embedded val name: Name,
+                        @Embedded val apiName: ModelName,
+                        val description: String) : Aggregate<ContentModelEvent>() {
     @ManyToOne
     @JoinColumn(name = "branch_id")
     lateinit var branch: Branch
@@ -30,7 +30,7 @@ class ContentModel(@Embedded val name: Name,
 
     val previewField: Field
         get() = _previewField ?: IdField
-    
+
     @get:Transient
     val fields: MutableList<Field>
         get() =

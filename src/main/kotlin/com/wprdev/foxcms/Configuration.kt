@@ -24,6 +24,8 @@ class Configuration {
         schemaParserDictionary.add("UpdatedAtField", UpdatedAtField::class)
         schemaParserDictionary.add("CreatedAtField", CreatedAtField::class)
         schemaParserDictionary.add("PublishStatusField", PublishStatusField::class)
+        schemaParserDictionary.add("AssetField", AssetField::class)
+
         return schemaParserDictionary
     }
 }

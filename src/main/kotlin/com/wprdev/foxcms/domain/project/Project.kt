@@ -1,4 +1,4 @@
-package com.wprdev.foxcms.domain.project.domain
+package com.wprdev.foxcms.domain.project
 
 import com.wprdev.foxcms.common.BaseEntity
 import com.wprdev.foxcms.common.NameGenerator

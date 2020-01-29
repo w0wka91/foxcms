@@ -1,6 +1,6 @@
 package com.wprdev.foxcms.security.authentication
 
-import com.wprdev.foxcms.domain.project.domain.ProjectService
+import com.wprdev.foxcms.domain.project.ProjectService
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

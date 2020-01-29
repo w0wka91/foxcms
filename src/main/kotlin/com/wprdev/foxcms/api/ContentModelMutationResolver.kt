@@ -12,7 +12,6 @@ import com.wprdev.foxcms.infrastructure.ContentModelRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ResponseStatusException
-import java.lang.IllegalArgumentException
 
 
 @Component
@@ -118,6 +117,30 @@ class ContentModelMutationResolver(
         }
     }
 
+    data class AddAssetFieldInput(val modelId: Long,
+                                  val fieldName: String,
+                                  val apiName: String,
+                                  val concern: Concern)
+
+    fun addAssetField(
+            input: AddAssetFieldInput
+    ): AssetField? {
+        with(input) {
+            val contentModel = contentModelRepo.findById(modelId).orElseThrow { throw ResponseStatusException(HttpStatus.NOT_FOUND) }
+
+            val field = AssetField(
+                    Name(fieldName),
+                    FieldName(apiName),
+                    concern)
+
+            contentModel.addField(field)
+
+            contentModelRepo.save(contentModel)
+            prismaServer.deploy(contentModel.branch)
+            return contentModel.fields.find { it == field } as AssetField
+        }
+    }
+
     data class DeleteFieldPayload(val modelId: Long, val fieldId: Long?)
 
     fun deleteField(
@@ -126,12 +149,12 @@ class ContentModelMutationResolver(
     ): List<DeleteFieldPayload> {
         val model = this.contentModelRepo.findById(modelId).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
         val field = model.findField(fieldId)
-        if(field != null) {
-            val result = if(field is RelationField) {
+        if (field != null) {
+            val result = if (field is RelationField) {
                 val relatesToField = field.relatesTo.fields.find { it is RelationField && it.relatesTo.id == modelId } as RelationField
-                listOf( DeleteFieldPayload(modelId, field.id), DeleteFieldPayload(field.relatesTo.id, relatesToField.id))
+                listOf(DeleteFieldPayload(modelId, field.id), DeleteFieldPayload(field.relatesTo.id, relatesToField.id))
             } else {
-                listOf( DeleteFieldPayload(modelId, field.id))
+                listOf(DeleteFieldPayload(modelId, field.id))
             }
             model.deleteField(field)
             contentModelRepo.save(model)

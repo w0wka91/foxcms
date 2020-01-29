@@ -2,10 +2,11 @@ package com.wprdev.foxcms.domain.branch
 
 import com.wprdev.foxcms.common.BaseEntity
 import com.wprdev.foxcms.common.Name
+import com.wprdev.foxcms.domain.branch.defaultModels.AssetModel
 import com.wprdev.foxcms.domain.branch.field.EnumField
 import com.wprdev.foxcms.domain.branch.field.EnumListField
 import com.wprdev.foxcms.domain.branch.field.RelationField
-import com.wprdev.foxcms.domain.project.domain.Project
+import com.wprdev.foxcms.domain.project.Project
 import org.hibernate.annotations.Cascade
 import org.hibernate.annotations.CascadeType
 import javax.persistence.*
@@ -29,7 +30,12 @@ class Branch(@ManyToOne
 
     @OneToMany(mappedBy = "branch", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    val contentModels = mutableListOf<ContentModel>()
+    private val _contentModels = mutableListOf<ContentModel>()
+
+    @get:Transient
+    val contentModels: MutableList<ContentModel>
+        get() = mutableListOf<ContentModel>(AssetModel)
+                .union(_contentModels).toMutableList()
 
     fun addEnum(enum: Enum): Enum {
         check(!contentModels.any { it.apiName == enum.apiName }) { "Content model with the API name ${enum.apiName} already exists" }
@@ -40,7 +46,7 @@ class Branch(@ManyToOne
     }
 
     fun deleteEnum(enum: Enum?) {
-        contentModels.forEach { contentModel ->
+        _contentModels.forEach { contentModel ->
             contentModel.fields
                     .filter {
                         when (it) {
@@ -59,16 +65,16 @@ class Branch(@ManyToOne
         check(!contentModels.any { it == model }) { "Content model with the API name ${model.apiName} already exists" }
         check(!enums.any { it.apiName == model.apiName }) { "Enum with the name ${model.apiName} already exists" }
         model.branch = this
-        this.contentModels.add(model)
+        this._contentModels.add(model)
         return model
     }
 
-    fun findModel(id: Long) = contentModels.find { it.id == id }
+    fun findModel(id: Long) = _contentModels.find { it.id == id }
 
-    fun findEnum(id: Long) = enums.find { it.id == id }
+    fun findEnum(id: Long) = _enums.find { it.id == id }
 
     fun deleteContentModel(model: ContentModel?) {
-        contentModels.forEach { contentModel ->
+        _contentModels.forEach { contentModel ->
             contentModel.fields
                     .filterIsInstance<RelationField>()
                     .filter {
@@ -77,7 +83,7 @@ class Branch(@ManyToOne
                         contentModel.deleteField(it)
                     }
         }
-        contentModels.remove(model)
+        _contentModels.remove(model)
     }
 
     fun generateSDL(): String {

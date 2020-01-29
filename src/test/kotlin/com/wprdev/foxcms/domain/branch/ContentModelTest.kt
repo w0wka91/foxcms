@@ -2,7 +2,7 @@ package com.wprdev.foxcms.domain.branch
 
 import com.wprdev.foxcms.common.Name
 import com.wprdev.foxcms.domain.branch.field.*
-import com.wprdev.foxcms.domain.project.domain.Project
+import com.wprdev.foxcms.domain.project.Project
 import junit.framework.Assert.assertTrue
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat

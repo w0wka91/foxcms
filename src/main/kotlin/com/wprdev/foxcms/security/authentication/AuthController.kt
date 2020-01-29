@@ -1,7 +1,7 @@
 package com.wprdev.foxcms.security.authentication
 
 
-import com.wprdev.foxcms.domain.project.domain.ProjectService
+import com.wprdev.foxcms.domain.project.ProjectService
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

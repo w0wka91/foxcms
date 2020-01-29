@@ -7,6 +7,7 @@ enum class DisplayType(@Transient val type: String) {
     FLOAT("Float"),
     CHECKBOX("Boolean"),
     DATE("DateTime"),
+    IMAGE("Asset"),
     JSON_EDITOR("Json");
 
     override fun toString() = type

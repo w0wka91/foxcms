@@ -31,7 +31,7 @@ abstract class BaseEntity {
     var id: Long = 0
 
     @CreatedDate
-    open var createdAt: LocalDateTime? = null
+    open var createdAt: LocalDateTime = LocalDateTime.now()
     @LastModifiedDate
-    open var updatedAt: LocalDateTime? = null
+    open var updatedAt: LocalDateTime = LocalDateTime.now()
 }

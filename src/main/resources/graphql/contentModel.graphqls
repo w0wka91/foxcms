@@ -38,11 +38,19 @@ type AddRelationFieldPayload {
     field: RelationField!
 }
 
+input AddAssetFieldInput {
+    modelId: ID!
+    fieldName: String!
+    apiName: String!
+    concern: Concern!
+}
+
 extend type Mutation {
     addContentModel(input: AddContentModelInput!): ContentModel!
     addScalarField(input: AddScalarFieldInput!): ScalarField!
     addListField(input: AddListFieldInput!): ListField!
     addRelationField(input: AddRelationInput!): [AddRelationFieldPayload!]!
+    addAssetField(input: AddAssetFieldInput!): AssetField!
     deleteField(modelId: ID!, id: ID!): [DeleteFieldPayload!]!
     reorderField(modelId: ID!, from: Int!, to: Int!): ContentModel
 }
