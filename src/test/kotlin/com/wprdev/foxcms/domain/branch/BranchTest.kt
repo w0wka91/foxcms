@@ -108,7 +108,7 @@ class BranchTest {
                 ""
         )
         branch.addContentModel(model)
-        assertEquals(modelCount + 1, branch.enums.size)
+        assertEquals(modelCount + 1, branch.contentModels.size)
         assertNotNull(branch.contentModels.find { it.apiName.value == "User" })
     }
 

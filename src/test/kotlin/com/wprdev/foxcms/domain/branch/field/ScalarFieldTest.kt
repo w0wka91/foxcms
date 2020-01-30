@@ -38,6 +38,18 @@ class ScalarFieldTest {
                 Name("Handle"),
                 FieldName("handle"),
                 DisplayType.SINGLE_LINE_TEXT,
+                Concern.OPTIONAL,
+                Constraint.UNIQUE
+        )
+        assertThat(field.generateSDL()).isEqualTo("handle: String @unique")
+    }
+
+    @Test
+    fun test_generateSDL_requiredAndUniqueField() {
+        val field = ScalarField(
+                Name("Handle"),
+                FieldName("handle"),
+                DisplayType.SINGLE_LINE_TEXT,
                 Concern.REQUIRED,
                 Constraint.UNIQUE
         )

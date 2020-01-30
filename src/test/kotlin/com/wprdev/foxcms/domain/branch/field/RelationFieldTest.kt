@@ -14,7 +14,7 @@ class RelationFieldTest {
         val user = ContentModel(Name("User"), ModelName("User"), "")
         val relation = RelationField(Name("User"), FieldName("user"), user, RelationType.ONE_TO_ONE)
         Assertions.assertThat(relation.generateSDL())
-                .isEqualTo("user: User!")
+                .isEqualTo("user: User")
     }
 
 
@@ -23,7 +23,7 @@ class RelationFieldTest {
         val user = ContentModel(Name("User"), ModelName("User"), "")
         val relation = RelationField(Name("User"), FieldName("user"), user, RelationType.ONE_TO_ONE_DIRECTIVE)
         Assertions.assertThat(relation.generateSDL())
-                .isEqualTo("user: User! @relation(link: INLINE)")
+                .isEqualTo("user: User @relation(link: INLINE)")
     }
 
     @Test
@@ -39,6 +39,6 @@ class RelationFieldTest {
         val user = ContentModel(Name("User"), ModelName("User"), "")
         val relation = RelationField(Name("User"), FieldName("user"), user, RelationType.MANY_TO_ONE)
         Assertions.assertThat(relation.generateSDL())
-                .isEqualTo("user: User! @relation(link: INLINE)")
+                .isEqualTo("user: User @relation(link: INLINE)")
     }
 }
